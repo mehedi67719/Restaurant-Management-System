@@ -4,12 +4,16 @@ import { IoMdMoon } from "react-icons/io";
 import { IoMenuSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
+import Useauth from "../Hooks/Useauth";
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dark, setDark] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const {User}=Useauth();
+
+    console.log(User)
 
     useEffect(() => {
         if (dark) {
@@ -29,7 +33,6 @@ const Navbar = () => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const User = false;
 
     return (
         <nav className="sticky top-0 z-50 bg-white dark:bg-black shadow">
@@ -45,10 +48,10 @@ const Navbar = () => {
                     </ul>
                     <div className="hidden md:flex items-center gap-4">
                         <button onClick={() => setDark(!dark)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition">
-                            {dark ? <FaSun size={18} /> : <IoMdMoon size={18} />}
+                            {dark ? <FaSun size={25} /> : <IoMdMoon size={25} />}
                         </button>
                         <Link to="/cart" className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition">
-                            <FaShoppingCart size={18} />
+                            <FaShoppingCart size={25} />
                             <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
                         </Link>
                         {User ? (
@@ -57,7 +60,10 @@ const Navbar = () => {
                                     onClick={() => setDropdownOpen(!dropdownOpen)}
                                     className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
                                 >
-                                    <FaRegUserCircle size={18} />
+                                    {
+                                        User.photoURL?( <img src={User.photoURL} alt="" />):(<FaRegUserCircle size={25} />)
+                                    }
+                                
                                 </button>
                                 {dropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-44 rounded-md bg-white dark:bg-gray-800 shadow-lg overflow-hidden transition">
@@ -74,7 +80,7 @@ const Navbar = () => {
                     </div>
                     <div className="flex md:hidden items-center gap-2">
                         <button onClick={() => setDark(!dark)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition">
-                            {dark ? <FaSun size={18} /> : <IoMdMoon size={18} />}
+                            {dark ? <FaSun size={25} /> : <IoMdMoon size={18} />}
                         </button>
                         <button onClick={() => setMenuOpen(!menuOpen)} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                             {menuOpen ? <RxCross2 className="text-black dark:text-white" size={22} /> : <IoMenuSharp className="text-black dark:text-white" size={22} />}
