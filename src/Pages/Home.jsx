@@ -1,43 +1,32 @@
 import React, { useState } from "react";
-import { FaStar, FaUtensils, FaShoppingCart, FaTruck, FaSmile } from "react-icons/fa";
+import { FaStar, FaUtensils, FaShoppingCart, FaTruck, FaSmile, FaMapMarkerAlt } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFood, fetchRestaurants } from "../Components/api";
+import Spinner from "../Components/Spinner";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Link } from "react-router";
 
 const Home = () => {
   const [dark, setDark] = useState(false);
 
+  const { data: foods, isLoading: foodLoading, isError: foodError, error: foodErrMsg } = useQuery({
+    queryKey: ["Foods"],
+    queryFn: fetchFood,
+  });
+
+  const { data: restaurants, isLoading: resLoading, isError: resError, error: resErrMsg } = useQuery({
+    queryKey: ["restaurants"],
+    queryFn: fetchRestaurants,
+  });
+
   const heroImages = [
-    "https://source.unsplash.com/1600x600/?burger",
-    "https://source.unsplash.com/1600x600/?pizza",
-    "https://source.unsplash.com/1600x600/?biryani",
-  ];
-
-  const categories = [
-    { name: "Pizza", image: "https://source.unsplash.com/100x100/?pizza" },
-    { name: "Burger", image: "https://source.unsplash.com/100x100/?burger" },
-    { name: "Sushi", image: "https://source.unsplash.com/100x100/?sushi" },
-    { name: "Indian", image: "https://source.unsplash.com/100x100/?indian-food" },
-    { name: "Dessert", image: "https://source.unsplash.com/100x100/?dessert" },
-    { name: "Drinks", image: "https://source.unsplash.com/100x100/?drink" },
-  ];
-
-  const restaurants = [
-    { name: "Food Heaven", rating: 4.8, category: "Pizza", location: "Dhaka", image: "https://source.unsplash.com/300x200/?restaurant" },
-    { name: "Spicy Hub", rating: 4.5, category: "Indian", location: "Chittagong", image: "https://source.unsplash.com/300x200/?restaurant" },
-    { name: "Tasty Bites", rating: 4.7, category: "Burger", location: "Sylhet", image: "https://source.unsplash.com/300x200/?restaurant" },
-    { name: "Burger King", rating: 4.6, category: "Burger", location: "Khulna", image: "https://source.unsplash.com/300x200/?restaurant" },
-  ];
-
-  const foods = [
-    { name: "Cheese Pizza", price: 10.99, rating: 4.8, image: "https://source.unsplash.com/200x200/?pizza" },
-    { name: "Veg Burger", price: 8.99, rating: 4.6, image: "https://source.unsplash.com/200x200/?burger" },
-    { name: "Chicken Biryani", price: 12.99, rating: 4.7, image: "https://source.unsplash.com/200x200/?biryani" },
-    { name: "Sushi", price: 14.99, rating: 4.5, image: "https://source.unsplash.com/200x200/?sushi" },
-    { name: "Chocolate Cake", price: 6.99, rating: 4.9, image: "https://source.unsplash.com/200x200/?dessert" },
-    { name: "Soft Drink", price: 1.99, rating: 4.3, image: "https://source.unsplash.com/200x200/?drink" },
+    "https://images.pexels.com/photos/10749578/pexels-photo-10749578.jpeg",
+    "https://images.pexels.com/photos/3252136/pexels-photo-3252136.jpeg",
+    "https://images.pexels.com/photos/31150174/pexels-photo-31150174.jpeg",
   ];
 
   const steps = [
@@ -55,9 +44,9 @@ const Home = () => {
   ];
 
   const testimonials = [
-    { name: "John Doe", review: "Amazing service!", rating: 5, photo: "https://source.unsplash.com/100x100/?man" },
-    { name: "Jane Smith", review: "Delicious food!", rating: 4.8, photo: "https://source.unsplash.com/100x100/?woman" },
-    { name: "Ali Khan", review: "Fast delivery!", rating: 5, photo: "https://source.unsplash.com/100x100/?man" },
+    { name: "John Doe", review: "Amazing service! The food arrived hot and fresh.", rating: 5, photo: "https://source.unsplash.com/100x100/?man" },
+    { name: "Jane Smith", review: "Great variety of restaurants. Loved the experience.", rating: 4.8, photo: "https://source.unsplash.com/100x100/?woman" },
+    { name: "Ali Khan", review: "Fast delivery and excellent support team.", rating: 5, photo: "https://source.unsplash.com/100x100/?man" },
   ];
 
   const faqs = [
@@ -66,8 +55,17 @@ const Home = () => {
     { q: "Can I track my order?", a: "Yes, a tracking link is sent after placing order." },
   ];
 
+  if (foodLoading || resLoading) return <div className="flex justify-center mt-20"><Spinner /></div>;
+  if (foodError) return <p className="text-center text-red-500 mt-10">{foodErrMsg.message}</p>;
+  if (resError) return <p className="text-center text-red-500 mt-10">{resErrMsg.message}</p>;
+
+  const topFoods = foods.slice(0, 4);
+  const topRestaurants = restaurants.slice(0, 4);
+
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${dark ? "dark" : ""} bg-gray-100 dark:bg-gray-900`}>
+    <div className={`min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-500`}>
+
+
       <section className="relative w-full">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
@@ -78,100 +76,104 @@ const Home = () => {
         >
           {heroImages.map((img, i) => (
             <SwiperSlide key={i}>
-              <div
-                className="h-96 md:h-[600px] w-full bg-cover bg-center flex flex-col justify-center items-center text-center px-4"
-                style={{ backgroundImage: `url(${img})` }}
-              >
+              <div className="h-96 md:h-[600px] w-full bg-cover bg-center flex flex-col justify-center items-center text-center px-4" style={{ backgroundImage: `url(${img})` }}>
                 <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
                   Delicious food, delivered fast!
                 </h1>
                 <p className="text-lg md:text-xl text-white mb-6 drop-shadow-md">
                   Order your favorite meals from top restaurants in your city
                 </p>
-                <div className="flex gap-4 flex-wrap justify-center">
-                  <button className="btn-primary px-6 py-3 font-semibold rounded-lg">Order Now</button>
-                  <button className="btn-primary px-6 py-3 font-semibold rounded-lg">Browse Restaurants</button>
+                <div className="flex gap-4">
+                  <button className="btn-primary px-6 py-3 rounded-lg"><Link to='/foods'>Order Now</Link></button>
+                  <button className="btn-primary px-6 py-3 rounded-lg"><Link to='/restaurants'>Browse Restaurants</Link></button>
                 </div>
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </section>
+
 
       <section className="py-16 px-4 max-w-[95%] mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Popular Restaurants</h2>
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{ 640: { slidesPerView: 2 }, 768: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }}
-          navigation
-          loop
-        >
-          {restaurants.map((r) => (
-            <SwiperSlide key={r.name}>
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 shadow hover:shadow-2xl transition transform hover:-translate-y-1">
-                <img src={r.image} alt={r.name} className="h-44 w-full rounded mb-4 object-cover"/>
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">{r.name}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{r.category} - {r.location}</p>
-                <div className="flex items-center gap-1 text-yellow-400 mb-2">
-                  {Array.from({ length: Math.round(r.rating) }).map((_, i) => <FaStar key={i} />)}
-                </div>
-                <button className="btn-primary w-full py-2 font-semibold rounded-lg">View Menu</button>
+        <h2 className="text-3xl font-bold text-center mb-4 dark:text-white">Top Restaurants</h2>
+        <div className="flex justify-center mb-6">{resLoading && <Spinner />}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+          {topRestaurants.map((r) => (
+            <div key={r._id} className="bg-white dark:bg-gray-900 rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
+              <div className="relative">
+                <img src={r.image} alt={r.name} className="h-52 w-full object-cover" />
+                {r.isOpen ? (
+                  <span className="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-xl font-semibold">Open</span>
+                ) : (
+                  <span className="absolute top-3 left-3 bg-red-500 text-white text-xs px-2 py-1 rounded-xl font-semibold">Closed</span>
+                )}
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </section>
-
-      <section className="py-16 px-4 max-w-[95%] mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Popular Foods</h2>
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={20}
-          slidesPerView={2}
-          breakpoints={{ 640: { slidesPerView: 3 }, 768: { slidesPerView: 4 } }}
-          navigation
-          loop
-        >
-          {foods.map((f) => (
-            <SwiperSlide key={f.name}>
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 shadow hover:shadow-2xl transition transform hover:-translate-y-1">
-                <img src={f.image} alt={f.name} className="h-40 w-full rounded mb-4 object-cover"/>
-                <h3 className="font-semibold text-gray-800 dark:text-gray-200">{f.name}</h3>
-                <p className="text-gray-600 dark:text-gray-300">${f.price}</p>
-                <div className="flex items-center gap-1 text-yellow-400 mb-2">
-                  {Array.from({ length: Math.round(f.rating) }).map((_, i) => <FaStar key={i} />)}
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">{r.name}</h3>
+                  <p className="text-black bg-orange-400 py-0.5 px-2 rounded-xl font-semibold text-sm">⭐ {r.rating}</p>
                 </div>
-                <button className="btn-primary w-full py-2 font-semibold rounded-lg">Add to Cart</button>
+                <p className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 mb-3"><FaMapMarkerAlt /> {r.location}</p>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="inline-block text-sm font-semibold text-primary">{r.category}</span>
+                  <span className="inline-block text-sm font-semibold text-gray-500 dark:text-gray-400">{r.reviews ? r.reviews.length : 0} Reviews</span>
+                </div>
+                <button className="btn-primary w-full py-3 rounded-2xl text-lg">
+                  <Link to={`/restaurants/${r._id}`}>View Details</Link>
+                </button>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <div className="text-center mt-6">
-          <button className="btn-primary px-6 py-2 font-semibold rounded-lg">See All Foods</button>
-        </div>
-      </section>
-
-      <section className="py-16 px-4 max-w-[95%] mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg transition-colors duration-500">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">How It Works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-          {steps.map((step, i) => (
-            <div key={i} className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow hover:shadow-2xl transition transform hover:-translate-y-1">
-              <div className="text-primary mb-4 flex justify-center">{step.icon}</div>
-              <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{step.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">{step.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="py-16 px-4 max-w-[95%] mx-auto text-center">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Statistics</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+      <section className="py-16 px-4 max-w-[95%] mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-4 dark:text-white">Top Foods</h2>
+        <div className="flex justify-center mb-6">{foodLoading && <Spinner />}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+          {topFoods.map((f) => (
+            <div key={f._id} className="bg-white dark:bg-gray-900 rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
+              <img src={f.image} alt={f.name} className="h-52 w-full object-cover" />
+              <div className="p-6">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{f.name}</h3>
+                <p className="text-primary font-semibold mb-2">${f.price}</p>
+                <div className="flex items-center gap-1 text-yellow-400 mb-4">
+                  {Array.from({ length: Math.round(f.rating) }).map((_, i) => <FaStar key={i} />)}
+                </div>
+                <div className="flex items-center gap-1">
+                  <button className="btn-primary w-full  text-lg">
+                    <Link>Add to Cart</Link>
+                  </button>
+                  <button className="btn-primary w-full   text-lg">
+                    <Link to={`/food/${f._id}`}>View Detels</Link>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    
+      <section className="py-16 px-4 max-w-[95%] mx-auto bg-gray-200 dark:bg-gray-800 rounded-lg">
+        <h2 className="text-3xl font-bold text-center mb-8 dark:text-white">How It Works</h2>
+        <div className="grid md:grid-cols-4 gap-6 text-center">
+          {steps.map((s, i) => (
+            <div key={i} className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
+              <div className="flex justify-center mb-4 text-primary">{s.icon}</div>
+              <h3 className="font-semibold dark:text-white">{s.title}</h3>
+              <p className="text-gray-600 dark:text-gray-300">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-16 px-4 max-w-[95%] mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {stats.map((s, i) => (
-            <div key={i} className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow hover:shadow-2xl transition transform hover:-translate-y-1">
-              <p className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">{s.value}</p>
+            <div key={i} className="bg-white dark:bg-black p-6 rounded-lg shadow">
+              <p className="text-3xl font-bold dark:text-white">{s.value}</p>
               <p className="text-gray-600 dark:text-gray-300">{s.label}</p>
             </div>
           ))}
@@ -179,42 +181,27 @@ const Home = () => {
       </section>
 
       <section className="py-16 px-4 max-w-[95%] mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Testimonials</h2>
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{ 640: { slidesPerView: 1 }, 768: { slidesPerView: 2 } }}
-          pagination={{ clickable: true }}
-          loop
-          autoplay={{ delay: 5000 }}
-        >
+        <h2 className="text-3xl font-bold text-center mb-10 dark:text-white">What Our Customers Say</h2>
+        <div className="grid md:grid-cols-3 gap-6">
           {testimonials.map((t, i) => (
-            <SwiperSlide key={i}>
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center text-center">
-                <img src={t.photo} alt={t.name} className="w-16 h-16 rounded-full mb-4 object-cover"/>
-                <p className="text-gray-600 dark:text-gray-300 mb-2">"{t.review}"</p>
-                <div className="flex gap-1 text-yellow-400 mb-2">
-                  {Array.from({ length: Math.round(t.rating) }).map((_, i) => <FaStar key={i} />)}
-                </div>
-                <h4 className="font-semibold text-gray-800 dark:text-gray-200">{t.name}</h4>
+            <div key={i} className="bg-white dark:bg-black p-6 rounded-lg shadow text-center">
+              <img src={t.photo} className="w-16 h-16 rounded-full mx-auto mb-4 object-cover" />
+              <p className="text-gray-600 dark:text-gray-300 mb-4">“{t.review}”</p>
+              <div className="flex justify-center text-yellow-400 mb-2">
+                {Array.from({ length: Math.round(t.rating) }).map((_, i) => <FaStar key={i} />)}
               </div>
-            </SwiperSlide>
+              <h4 className="font-semibold dark:text-white">{t.name}</h4>
+            </div>
           ))}
-        </Swiper>
-      </section>
-
-      <section className="py-16 px-4 max-w-[95%] mx-auto text-center bg-gray-200 dark:bg-gray-800 rounded-lg transition-colors duration-500">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">Sign Up Now & Get Your First Order Free!</h2>
-        <button className="btn-primary px-6 py-3 font-semibold rounded-lg">Register Now</button>
+        </div>
       </section>
 
       <section className="py-16 px-4 max-w-[95%] mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">Frequently Asked Questions</h2>
+        <h2 className="text-3xl font-bold text-center mb-8 dark:text-white">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {faqs.map((f, i) => (
-            <details key={i} className="bg-white dark:bg-gray-900 rounded-lg p-4 shadow hover:shadow-2xl transition transform hover:-translate-y-1">
-              <summary className="font-semibold cursor-pointer">{f.q}</summary>
+            <details key={i} className="bg-white dark:bg-black p-4 rounded-lg shadow">
+              <summary className="font-semibold cursor-pointer dark:text-white">{f.q}</summary>
               <p className="mt-2 text-gray-600 dark:text-gray-300">{f.a}</p>
             </details>
           ))}

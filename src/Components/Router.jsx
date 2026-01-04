@@ -7,6 +7,8 @@ import Restaurants from "../Pages/Restaurants";
 import Foods from "../Pages/Foods";
 import Howitwork from "../Pages/Howitwork";
 import Contact from "../Pages/Contact";
+import Restaurantsdetels from "../Pages/Restaurantsdetels";
+import Fooddetels from "../Pages/Fooddetels";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +42,14 @@ export const router = createBrowserRouter([
         {
           path:"/contact",
           element:<Contact/>
+        },
+        {
+          path:"/restaurants/:id",
+          element:<Restaurantsdetels/>
+        },
+        {
+          path:"/food/:id",
+          element:<Fooddetels/>
         }
     ]
   },

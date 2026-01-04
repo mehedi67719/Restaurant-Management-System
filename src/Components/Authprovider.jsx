@@ -9,6 +9,7 @@ import {
   signInWithPopup
 } from "firebase/auth";
 import { auth } from '../../firebase.init';
+import Spinner from './Spinner';
 
 const Authprovider = ({ children }) => {
 
@@ -44,7 +45,7 @@ const Authprovider = ({ children }) => {
 
 
   if(loading){
-    return <p>Loading...</p>
+    return <Spinner/>
   }
   const authinfo = {
     createaccountwithemail,
