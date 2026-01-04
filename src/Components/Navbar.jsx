@@ -5,15 +5,22 @@ import { IoMenuSharp } from "react-icons/io5";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 import Useauth from "../Hooks/Useauth";
+import { useQuery } from "@tanstack/react-query";
+import { fetchAddToCart } from "./api";
+import Swal from "sweetalert2"; 
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dark, setDark] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-    const {User}=Useauth();
+    const { User, logout } = Useauth();
 
-    console.log(User)
+    const { data: cartData } = useQuery({
+        queryKey: ["cart", User?.email],
+        queryFn: () => fetchAddToCart(User.email),
+        enabled: !!User?.email
+    });
 
     useEffect(() => {
         if (dark) {
@@ -33,6 +40,24 @@ const Navbar = () => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const handleLogout = async () => {
+        try {
+            await logout(); 
+            Swal.fire({
+                icon: 'success',
+                title: 'Logged Out',
+                text: 'You have successfully logged out!',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: error.message || 'Something went wrong!',
+            });
+        }
+    };
 
     return (
         <nav className="sticky top-0 z-50 bg-white dark:bg-black shadow">
@@ -52,7 +77,7 @@ const Navbar = () => {
                         </button>
                         <Link to="/cart" className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition">
                             <FaShoppingCart size={25} />
-                            <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                            <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">{cartData?.length || 0}</span>
                         </Link>
                         {User ? (
                             <div className="relative" ref={dropdownRef}>
@@ -60,17 +85,15 @@ const Navbar = () => {
                                     onClick={() => setDropdownOpen(!dropdownOpen)}
                                     className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition"
                                 >
-                                    {
-                                        User.photoURL?( <img src={User.photoURL} alt="" />):(<FaRegUserCircle size={25} />)
-                                    }
-                                
+                                    {User.photoURL ? (<img src={User.photoURL} alt="" className="rounded-full w-8 h-8" />) : (<FaRegUserCircle size={25} />)}
                                 </button>
                                 {dropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-44 rounded-md bg-white dark:bg-gray-800 shadow-lg overflow-hidden transition">
                                         <Link className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" to="/dashboard">Dashboard</Link>
                                         <Link className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" to="/orders">My Orders</Link>
-                                        <Link className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" to="/profile">Profile</Link>
-                                        <button className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Logout</button>
+                                        <button onClick={handleLogout} className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            Logout
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -99,7 +122,9 @@ const Navbar = () => {
                         <>
                             <Link className="block py-2 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200" to="/dashboard">Dashboard</Link>
                             <Link className="block py-2 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200" to="/cart">Cart</Link>
-                            <button className="block py-2 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-left w-full">Logout</button>
+                            <button onClick={handleLogout} className="block py-2 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 text-left w-full">
+                                Logout
+                            </button>
                         </>
                     )}
                     {!User && (

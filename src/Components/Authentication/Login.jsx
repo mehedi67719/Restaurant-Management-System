@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import Useauth from "../../Hooks/Useauth";
@@ -15,6 +15,7 @@ const Login = () => {
     const { email, password } = data;
     try {
       const userCredential = await loginwithemail(email, password);
+   
       Swal.fire({
         icon: "success",
         title: "Logged In",

@@ -9,6 +9,13 @@ import Howitwork from "../Pages/Howitwork";
 import Contact from "../Pages/Contact";
 import Restaurantsdetels from "../Pages/Restaurantsdetels";
 import Fooddetels from "../Pages/Fooddetels";
+import Cart from "../Pages/Cart";
+import Profile from "../Pages/Dashboard/admin/Profile";
+import Dashboard from "../Pages/Dashboard/Dashboard";
+import Manageuser from "../Pages/Dashboard/admin/Manageuser";
+import ManageFood from "../Pages/Dashboard/admin/ManageFood";
+import ManageRestaurants from "../Pages/Dashboard/admin/ManageRestaurants";
+
 
 export const router = createBrowserRouter([
   {
@@ -50,8 +57,37 @@ export const router = createBrowserRouter([
         {
           path:"/food/:id",
           element:<Fooddetels/>
-        }
+        },
+        {
+          path:"/cart",
+          element:<Cart/>
+        },
+      
+     
     ]
   },
+
+     {
+          path:"/dashboard",
+          element:<Dashboard/>,
+          children:[
+            {
+              index:true,
+              element:<Profile/>
+            },
+            {
+              path:"/dashboard/admin/manage-user",
+              element:<Manageuser/>
+            },
+            {
+              path:"/dashboard/admin/manage-restaurants",
+              element:<ManageRestaurants/>,
+            },
+            {
+              path:"/dashboard/admin/manage-foods",
+              element:<ManageFood/>
+            }
+          ]
+        }
   
 ]);

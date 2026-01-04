@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState, useMemo } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import { fetchRestaurants } from "../Components/api";
 import Spinner from "../Components/Spinner";
 import { Link } from "react-router";
+import { fetchapproveRestaurants } from "../Components/api";
 
 const Restaurants = () => {
   const [search, setSearch] = useState("");
@@ -11,7 +11,7 @@ const Restaurants = () => {
 
   const { data: restaurants, isLoading, isError, error } = useQuery({
     queryKey: ["restaurants"],
-    queryFn: fetchRestaurants,
+    queryFn: fetchapproveRestaurants,
   });
 
   const categories = useMemo(() => {
@@ -120,9 +120,9 @@ const Restaurants = () => {
                         </span>
                       </div>
 
-                      <button className="btn-primary w-full py-3 rounded-2xl text-lg">
-                        <Link to={`/restaurants/${r._id}`}>View Details</Link>
-                      </button>
+                      
+                        <Link to={`/restaurants/${r._id}`} className="btn-primary w-full py-3 rounded-2xl text-lg">View Details</Link>
+                     
                     </div>
                   </div>
                 ))}
