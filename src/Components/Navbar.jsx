@@ -90,7 +90,7 @@ const Navbar = () => {
                                 {dropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-44 rounded-md bg-white dark:bg-gray-800 shadow-lg overflow-hidden transition">
                                         <Link className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" to="/dashboard">Dashboard</Link>
-                                        <Link className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" to="/orders">My Orders</Link>
+                                        <Link className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" to="/dashboard/my-order">My Orders</Link>
                                         <button onClick={handleLogout} className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                                             Logout
                                         </button>
