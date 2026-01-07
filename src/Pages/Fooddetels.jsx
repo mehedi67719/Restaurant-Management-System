@@ -84,11 +84,14 @@ const Fooddetels = () => {
         </h1>
 
         <div className="flex flex-col lg:flex-row gap-10 bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
-          <img
-            src={food.image}
-            alt={food.name}
-            className="w-full lg:w-1/2 h-80 lg:h-auto object-cover"
-          />
+
+          <div className="w-full lg:w-1/2 max-h-[500px] flex justify-center items-center overflow-hidden">
+            <img
+              src={food.image}
+              alt={food.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
 
           <div className="p-8 flex-1 flex flex-col justify-between">
             <div>
@@ -105,7 +108,7 @@ const Fooddetels = () => {
               </p>
 
               <div className="flex items-center gap-2 mb-4">
-                {Array.from({ length: Math.round(food.rating) }).map((_, i) => (
+                {Array.from({ length: Math.round(food.rating || 0) }).map((_, i) => (
                   <FaStar key={i} className="text-yellow-400" />
                 ))}
                 <span className="text-gray-600 dark:text-gray-300 ml-2">
@@ -133,11 +136,10 @@ const Fooddetels = () => {
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <span
-                className={`font-semibold ${
-                  food.availability === "Available"
+                className={`font-semibold ${food.availability === "Available"
                     ? "text-green-600"
                     : "text-red-600"
-                }`}
+                  }`}
               >
                 {food.availability}
               </span>
@@ -173,9 +175,7 @@ const Fooddetels = () => {
                       {rev.name}
                     </h4>
                     <div className="flex items-center gap-1 text-yellow-400">
-                      {Array.from({ length: Math.round(rev.rating) }).map(
-                        (_, i) => <FaStar key={i} />
-                      )}
+                      {Array.from({ length: Math.round(rev.rating) }).map((_, i) => <FaStar key={i} />)}
                     </div>
                   </div>
                   <p className="text-gray-700 dark:text-gray-300">

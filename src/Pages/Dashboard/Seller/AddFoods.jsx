@@ -48,7 +48,7 @@ const AddFoods = () => {
   };
 
   return (
-    <div className="min-h-screen max-w-[95%] mx-auto bg-gray-100 dark:bg-gray-900 flex justify-center items-center p-4">
+    <div className="min-h-screen w-full mx-auto bg-gray-100 dark:bg-gray-900 flex justify-center items-center ">
       <div className="bg-white dark:bg-gray-800 w-full rounded-xl shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">
           🍕 Add New Food

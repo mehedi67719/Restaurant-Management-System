@@ -27,6 +27,16 @@ export const fetchAddToCart = async (userEmail) => {
 };
 
 
+export const fetchfoodbyemail = async (userEmail) => {
+    if (!userEmail) throw new Error("User email is required");
+    const res = await fetch(`http://localhost:3000/food/${userEmail}`);
+    if (!res.ok) throw new Error("Failed to fetch food data");
+    return res.json();
+
+
+};
+
+
 export const fetchuser = async () => {
  
     const res = await fetch(`http://localhost:3000/user`);

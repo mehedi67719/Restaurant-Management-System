@@ -64,7 +64,7 @@ const Profile = () => {
   ];
 
   return (
-    <div className="max-w-[95%] mx-auto mt-10 p-6 bg-white dark:bg-black shadow-md rounded-lg">
+    <div className="w-full mx-auto mt-10 p-5 bg-white dark:bg-black shadow-md rounded-lg">
 
       <div className="flex flex-col items-center">
         <img
