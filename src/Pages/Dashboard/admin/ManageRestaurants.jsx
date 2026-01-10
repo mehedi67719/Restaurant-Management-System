@@ -16,7 +16,7 @@ const ManageRestaurants = () => {
  
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, status }) => {
-      const res = await fetch(`http://localhost:3000/restaurant/status/${id}`, {
+      const res = await fetch(`https://restaurant-management-system-server-lime.vercel.app/restaurant/status/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
@@ -31,7 +31,7 @@ const ManageRestaurants = () => {
   
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
-      const res = await fetch(`http://localhost:3000/restaurant/${id}`, {
+      const res = await fetch(`https://restaurant-management-system-server-lime.vercel.app/restaurant/${id}`, {
         method: "DELETE",
       });
       return res.json();

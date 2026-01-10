@@ -81,7 +81,7 @@ const Home = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/addtocart", {
+      const res = await fetch("https://restaurant-management-system-server-lime.vercel.app/addtocart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cartItem),
@@ -139,7 +139,7 @@ const Home = () => {
       <section className="py-16 px-4 max-w-[95%] mx-auto">
         <h2 className="text-3xl font-bold text-center mb-4 dark:text-white">Top Restaurants</h2>
         <div className="flex justify-center mb-6">{resLoading && <Spinner />}</div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {topRestaurants.map((r) => (
             <div key={r._id} className="bg-white dark:bg-gray-900 rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
               <div className="relative">
@@ -173,7 +173,7 @@ const Home = () => {
       <section className="py-16 px-4 max-w-[95%] mx-auto">
         <h2 className="text-3xl font-bold text-center mb-4 dark:text-white">Top Foods</h2>
         <div className="flex justify-center mb-6">{foodLoading && <Spinner />}</div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 Lg:gap-10 sm:gap-10 md:gap-4">
           {topFoods.map((f) => (
             <div key={f._id} className="bg-white dark:bg-gray-900 rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
               <img src={f.image} alt={f.name} className="h-52 w-full object-cover" />

@@ -49,7 +49,7 @@ const Foods = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/addtocart", {
+      const res = await fetch("https://restaurant-management-system-server-lime.vercel.app/addtocart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cartItem),
@@ -113,7 +113,7 @@ const Foods = () => {
             </div>
 
             {filteredFoods && filteredFoods.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {filteredFoods.map(f => (
                   <div key={f._id} className="bg-white dark:bg-gray-900 rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
                     <img src={f.image} alt={f.name} className="h-52 w-full object-cover" />

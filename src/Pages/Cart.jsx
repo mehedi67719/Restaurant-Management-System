@@ -24,7 +24,7 @@ const Cart = () => {
   );
 
   const handleRemove = async (id) => {
-    const res = await fetch(`http://localhost:3000/cart/${id}`, {
+    const res = await fetch(`https://restaurant-management-system-server-lime.vercel.app/cart/${id}`, {
       method: "DELETE",
     });
 

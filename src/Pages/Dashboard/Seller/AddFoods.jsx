@@ -28,7 +28,7 @@ const AddFoods = () => {
       sellerEmail: User?.email,
     };
 
-    const res = await fetch("http://localhost:3000/food", {
+    const res = await fetch("https://restaurant-management-system-server-lime.vercel.app/food", {
       method: "POST",
       headers: {
         "content-type": "application/json",

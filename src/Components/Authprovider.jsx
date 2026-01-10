@@ -30,11 +30,11 @@ const Authprovider = ({ children }) => {
       };
 
       // Check if user already exists
-      const res = await fetch(`http://localhost:3000/users/${encodeURIComponent(user.email)}`);
+      const res = await fetch(`https://restaurant-management-system-server-lime.vercel.app/users/${encodeURIComponent(user.email)}`);
       
       if (res.status === 404) {
         // User not found, create new
-        await fetch('http://localhost:3000/users', {
+        await fetch('https://restaurant-management-system-server-lime.vercel.app/users', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(userData)

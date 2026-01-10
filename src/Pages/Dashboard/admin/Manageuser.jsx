@@ -15,7 +15,7 @@ const Manageuser = () => {
 
   const updateRoleMutation = useMutation({
     mutationFn: async ({ email, role }) => {
-      const res = await fetch(`http://localhost:3000/users/role/${email}`, {
+      const res = await fetch(`https://restaurant-management-system-server-lime.vercel.app/users/role/${email}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ role }),

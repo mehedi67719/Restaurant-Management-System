@@ -42,7 +42,7 @@ const Fooddetels = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:3000/addtocart", {
+      const res = await fetch("https://restaurant-management-system-server-lime.vercel.app/addtocart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(cartItem),
@@ -137,8 +137,8 @@ const Fooddetels = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <span
                 className={`font-semibold ${food.availability === "Available"
-                    ? "text-green-600"
-                    : "text-red-600"
+                  ? "text-green-600"
+                  : "text-red-600"
                   }`}
               >
                 {food.availability}

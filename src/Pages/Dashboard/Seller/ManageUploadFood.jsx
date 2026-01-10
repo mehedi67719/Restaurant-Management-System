@@ -31,7 +31,7 @@ const ManageUploadFood = () => {
     });
 
     if (confirm.isConfirmed) {
-      const res = await fetch(`http://localhost:3000/food/${id}`, {
+      const res = await fetch(`https://restaurant-management-system-server-lime.vercel.app/food/${id}`, {
         method: "DELETE",
       });
 
@@ -70,7 +70,7 @@ const ManageUploadFood = () => {
       price: parseFloat(data.price),
     };
 
-    const res = await fetch(`http://localhost:3000/food/${editFood._id}`, {
+    const res = await fetch(`https://restaurant-management-system-server-lime.vercel.app/food/${editFood._id}`, {
       method: "PUT",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(updatedFood),
